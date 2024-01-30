@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Author;
+
 use Illuminate\Http\Request;
-use App\Http\Requests\AuthorRequest;
+use App\Models\Author;
 
 class AuthorController extends Controller
 {
-    public function index(){
-        $authors = Author::all();
+    public function index()
+    {
+        $authors = Author::Paginate(4);
         return view('index', ['authors' => $authors]);
     }
     public function add()
@@ -69,8 +70,7 @@ class AuthorController extends Controller
     }
     public function relate(Request $request) //追記
     {
-        $items = Author::all();
-        return view('author.index', ['items' => $items]);$hasItems = Author::has('book')->get();
+        $hasItems = Author::has('book')->get();
         $noItems = Author::doesntHave('book')->get();
         $param = ['hasItems' => $hasItems, 'noItems' => $noItems];
         return view('author.index',$param);
